@@ -8,21 +8,23 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
 
-interface ProfessorFormProps {
+interface StudentFormProps {
   onSuccess: () => void
-  professor?: {
+  student?: {
     _id: string
     name: string
     email: string
-    department: string
+    studentId: string
+    program: string
   }
 }
 
-export function ProfessorForm({ onSuccess, professor }: ProfessorFormProps) {
+export function StudentForm({ onSuccess, student }: StudentFormProps) {
   const [formData, setFormData] = useState({
-    name: professor?.name || "",
-    email: professor?.email || "",
-    department: professor?.department || "",
+    name: student?.name || "",
+    email: student?.email || "",
+    studentId: student?.studentId || "",
+    program: student?.program || "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -36,8 +38,8 @@ export function ProfessorForm({ onSuccess, professor }: ProfessorFormProps) {
     setIsSubmitting(true)
 
     try {
-      const url = professor ? `/api/professors/${professor._id}` : "/api/professors"
-      const method = professor ? "PUT" : "POST"
+      const url = student ? `/api/students/${student._id}` : "/api/students"
+      const method = student ? "PUT" : "POST"
 
       const response = await fetch(url, {
         method,
@@ -51,13 +53,14 @@ export function ProfessorForm({ onSuccess, professor }: ProfessorFormProps) {
         throw new Error("Erreur lors de la soumission")
       }
 
-      toast.success(professor ? "Professeur mis à jour avec succès" : "Professeur ajouté avec succès")
+      toast.success(student ? "Étudiant mis à jour avec succès" : "Étudiant ajouté avec succès")
 
-      if (!professor) {
+      if (!student) {
         setFormData({
           name: "",
           email: "",
-          department: "",
+          studentId: "",
+          program: "",
         })
       }
 
@@ -83,13 +86,20 @@ export function ProfessorForm({ onSuccess, professor }: ProfessorFormProps) {
       </div>
 
       <div className="grid gap-2">
-        <Label htmlFor="department">Département</Label>
-        <Input id="department" name="department" value={formData.department} onChange={handleChange} required />
+        <Label htmlFor="studentId">Numéro d&apos;étudiant</Label>
+        <Input id="studentId" name="studentId" value={formData.studentId} onChange={handleChange} required />
       </div>
 
-      <Button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Enregistrement..." : professor ? "Mettre à jour" : "Ajouter"}
-      </Button>
+      <div className="grid gap-2">
+        <Label htmlFor="program">Programme</Label>
+        <Input id="program" name="program" value={formData.program} onChange={handleChange} required />
+      </div>
+
+      <div className="flex justify-end">
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Enregistrement..." : student ? "Mettre à jour" : "Ajouter"}
+        </Button>
+      </div>
     </form>
   )
 }

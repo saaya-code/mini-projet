@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { X } from "lucide-react"
+import { toast } from "sonner"
 
 interface TimeSlot {
   day: string
@@ -38,12 +39,12 @@ export function AvailabilityForm({ professor, onSuccess }: AvailabilityFormProps
 
   const handleAddSlot = () => {
     if (!newSlot.day || !newSlot.startTime || !newSlot.endTime) {
-      console.log(newSlot.day, newSlot.startTime, newSlot.endTime)
+      toast.error("Veuillez remplir tous les champs")
       return
     }
 
     if (newSlot.startTime >= newSlot.endTime) {
-      console.log(newSlot.startTime, newSlot.endTime)
+      toast.error("L'heure de début doit être antérieure à l'heure de fin")
       return
     }
 
@@ -77,11 +78,12 @@ export function AvailabilityForm({ professor, onSuccess }: AvailabilityFormProps
         throw new Error("Erreur lors de la mise à jour des disponibilités")
       }
 
-    
+      toast.success("Disponibilités mises à jour avec succès")
 
       onSuccess()
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-     console.error(error)
+      toast.error("Une erreur est survenue lors de l'enregistrement")
     } finally {
       setIsSubmitting(false)
     }
