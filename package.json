@@ -37,7 +37,7 @@
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
     "theme-provider": "^1.0.8",
-    "xlsx": "^0.18.5"
+    "xlsx": "npm:@e965/xlsx@0.20.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
