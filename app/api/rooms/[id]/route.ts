@@ -19,7 +19,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   }
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const body = await request.json()
     const { name, capacity, building, floor, isAvailable } = body
@@ -30,9 +30,11 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 
     await dbConnect()
 
+    const id = (await params)?.id;
+
     // Check if another room has the same name
     const existingRoom = await Room.findOne({
-      _id: { $ne: params.id },
+      _id: { $ne: id },
       name,
     })
 
@@ -46,7 +48,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     }
 
     const room = await Room.findByIdAndUpdate(
-      params.id,
+      id,
       { name, capacity, building, floor, isAvailable },
       { new: true, runValidators: true },
     )

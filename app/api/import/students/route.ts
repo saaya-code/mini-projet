@@ -26,7 +26,6 @@ export async function POST(request: Request) {
     if (!data || data.length === 0) {
       return NextResponse.json({ error: "No data found in the file" }, { status: 400 })
     }
-
     // Validate data structure
     for (const row of data) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
