@@ -138,4 +138,3 @@ export function ScheduleViewer({ date, defenses, isLoading }: ScheduleViewerProp
     </div>
   )
 }
-

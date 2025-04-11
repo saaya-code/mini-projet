@@ -18,6 +18,11 @@ export default function SeedDatabase() {
     projects: 0,
     rooms: 0,
     defenses: 0,
+    users: {
+      admin: 0,
+      professors: 0,
+      students: 0,
+    },
   })
 
   const handleSeed = async () => {
@@ -42,32 +47,46 @@ export default function SeedDatabase() {
       setStats((prev) => ({ ...prev, professors: professorsData.count }))
 
       // Step 3: Seed students
-      setProgress(40)
+      setProgress(30)
       setMessage("Création des étudiants...")
       const studentsResponse = await fetch("/api/seed/students", { method: "POST" })
       const studentsData = await studentsResponse.json()
       setStats((prev) => ({ ...prev, students: studentsData.count }))
 
       // Step 4: Seed rooms
-      setProgress(60)
+      setProgress(40)
       setMessage("Création des salles...")
       const roomsResponse = await fetch("/api/seed/rooms", { method: "POST" })
       const roomsData = await roomsResponse.json()
       setStats((prev) => ({ ...prev, rooms: roomsData.count }))
 
       // Step 5: Seed projects
-      setProgress(80)
+      setProgress(50)
       setMessage("Création des projets...")
       const projectsResponse = await fetch("/api/seed/projects", { method: "POST" })
       const projectsData = await projectsResponse.json()
       setStats((prev) => ({ ...prev, projects: projectsData.count }))
 
       // Step 6: Generate some defenses
-      setProgress(90)
+      setProgress(70)
       setMessage("Génération des soutenances...")
       const defensesResponse = await fetch("/api/seed/defenses", { method: "POST" })
       const defensesData = await defensesResponse.json()
       setStats((prev) => ({ ...prev, defenses: defensesData.count }))
+
+      // Step 7: Create users
+      setProgress(90)
+      setMessage("Création des utilisateurs...")
+      const usersResponse = await fetch("/api/seed/users", { method: "POST" })
+      const usersData = await usersResponse.json()
+      setStats((prev) => ({
+        ...prev,
+        users: {
+          admin: usersData.count.admin,
+          professors: usersData.count.professors,
+          students: usersData.count.students,
+        },
+      }))
 
       // Complete
       setProgress(100)
@@ -134,9 +153,30 @@ export default function SeedDatabase() {
                 <p className="text-2xl font-bold">{stats.rooms}</p>
                 <p className="text-sm text-muted-foreground">Salles</p>
               </div>
-              <div className="bg-primary/10 rounded-lg p-4 text-center md:col-span-2">
+              <div className="bg-primary/10 rounded-lg p-4 text-center">
                 <p className="text-2xl font-bold">{stats.defenses}</p>
                 <p className="text-sm text-muted-foreground">Soutenances</p>
+              </div>
+              <div className="bg-primary/10 rounded-lg p-4 text-center">
+                <p className="text-2xl font-bold">
+                  {stats.users.admin + stats.users.professors + stats.users.students}
+                </p>
+                <p className="text-sm text-muted-foreground">Utilisateurs</p>
+              </div>
+            </div>
+
+            <div className="mt-4 p-4 border rounded-lg">
+              <h3 className="font-medium mb-2">Identifiants de connexion</h3>
+              <div className="space-y-2 text-sm">
+                <p>
+                  <span className="font-medium">Admin:</span> admin@universite.fr / password123
+                </p>
+                <p>
+                  <span className="font-medium">Professeurs:</span> [email du professeur] / password123
+                </p>
+                <p>
+                  <span className="font-medium">Étudiants:</span> [email de l&apos;étudiant] / password123
+                </p>
               </div>
             </div>
           </div>
@@ -167,4 +207,3 @@ export default function SeedDatabase() {
     </Card>
   )
 }
-

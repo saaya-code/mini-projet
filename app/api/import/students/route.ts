@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { dbConnect } from "@/lib/db"
+import dbConnect from "@/lib/db"
 import Student from "@/models/Student"
 import { read, utils } from "xlsx"
 
@@ -26,9 +26,9 @@ export async function POST(request: Request) {
     if (!data || data.length === 0) {
       return NextResponse.json({ error: "No data found in the file" }, { status: 400 })
     }
+
     // Validate data structure
     for (const row of data) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const typedRow = row as any
       if (!typedRow.name || !typedRow.email || !typedRow.studentId || !typedRow.program) {
         return NextResponse.json(
@@ -42,7 +42,6 @@ export async function POST(request: Request) {
     let insertedCount = 0
 
     for (const row of data) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const typedRow = row as any
 
       // Check if student already exists
@@ -70,4 +69,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to import students" }, { status: 500 })
   }
 }
-

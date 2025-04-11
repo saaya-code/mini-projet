@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { dbConnect } from "@/lib/db"
+import dbConnect from "@/lib/db"
 import Room from "@/models/Room"
 import { read, utils } from "xlsx"
 
@@ -29,7 +29,6 @@ export async function POST(request: Request) {
 
     // Validate data structure
     for (const row of data) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const typedRow = row as any
       if (!typedRow.name || typedRow.capacity === undefined || !typedRow.building || typedRow.floor === undefined) {
         return NextResponse.json(
@@ -43,7 +42,6 @@ export async function POST(request: Request) {
     let insertedCount = 0
 
     for (const row of data) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const typedRow = row as any
 
       // Check if room already exists
@@ -71,4 +69,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to import rooms" }, { status: 500 })
   }
 }
-

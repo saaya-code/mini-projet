@@ -103,4 +103,3 @@ export function StudentForm({ onSuccess, student }: StudentFormProps) {
     </form>
   )
 }
-

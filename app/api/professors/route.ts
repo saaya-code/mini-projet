@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { dbConnect } from "@/lib/db"
+import dbConnect from "@/lib/db"
 import Professor from "@/models/Professor"
 
 export async function GET() {
@@ -8,7 +8,7 @@ export async function GET() {
     const professors = await Professor.find({}).sort({ name: 1 })
     return NextResponse.json(professors)
   } catch (error) {
-    console.error(error)
+    console.log(error);
     return NextResponse.json({ error: "Failed to fetch professors" }, { status: 500 })
   }
 }
@@ -39,8 +39,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(professor, { status: 201 })
   } catch (error) {
-    console.error(error)
+    console.log(error);
     return NextResponse.json({ error: "Failed to create professor" }, { status: 500 })
   }
 }
-

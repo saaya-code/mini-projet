@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { dbConnect } from "@/lib/db"
+import dbConnect from "@/lib/db"
 import Defense from "@/models/Defense"
 
 export async function GET(request: Request) {
@@ -38,8 +38,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(defenses)
   } catch (error) {
-    console.error(error)
+    console.error(error);
     return NextResponse.json({ error: "Failed to fetch defenses" }, { status: 500 })
   }
 }
-

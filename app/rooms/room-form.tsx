@@ -128,4 +128,3 @@ export function RoomForm({ onSuccess, room }: RoomFormProps) {
     </form>
   )
 }
-

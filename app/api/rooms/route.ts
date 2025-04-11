@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { dbConnect } from "@/lib/db"
+import dbConnect from "@/lib/db"
 import Room from "@/models/Room"
 
 export async function GET() {
@@ -7,8 +7,9 @@ export async function GET() {
     await dbConnect()
     const rooms = await Room.find({}).sort({ building: 1, floor: 1, name: 1 })
     return NextResponse.json(rooms)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
+    console.error(error);
+
     return NextResponse.json({ error: "Failed to fetch rooms" }, { status: 500 })
   }
 }
@@ -44,9 +45,9 @@ export async function POST(request: Request) {
     })
 
     return NextResponse.json(room, { status: 201 })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
+    console.error(error);
+
     return NextResponse.json({ error: "Failed to create room" }, { status: 500 })
   }
 }
-

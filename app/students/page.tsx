@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import { useState, useEffect } from "react"
@@ -35,7 +36,6 @@ export default function StudentsPage() {
       const response = await fetch("/api/students")
       const data = await response.json()
       setStudents(data)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Impossible de charger les étudiants")
     }
@@ -162,4 +162,3 @@ export default function StudentsPage() {
     </div>
   )
 }
-

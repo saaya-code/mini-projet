@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { dbConnect } from "@/lib/db"
+import dbConnect from "@/lib/db"
 import Student from "@/models/Student"
 
 // Mock data for students
@@ -76,6 +76,78 @@ const studentData = [
     studentId: "20210012",
     program: "Master Mathématiques",
   },
+  {
+    name: "Maxime Leroy",
+    email: "maxime.leroy@etudiant.fr",
+    studentId: "20210013",
+    program: "Master Informatique",
+  },
+  {
+    name: "Inès Fournier",
+    email: "ines.fournier@etudiant.fr",
+    studentId: "20210014",
+    program: "Master Électronique",
+  },
+  {
+    name: "Louis Morel",
+    email: "louis.morel@etudiant.fr",
+    studentId: "20210015",
+    program: "Master Mathématiques",
+  },
+  {
+    name: "Jade Bonnet",
+    email: "jade.bonnet@etudiant.fr",
+    studentId: "20210016",
+    program: "Master Informatique",
+  },
+  {
+    name: "Gabriel Dupuis",
+    email: "gabriel.dupuis@etudiant.fr",
+    studentId: "20210017",
+    program: "Master Électronique",
+  },
+  {
+    name: "Léa Fontaine",
+    email: "lea.fontaine@etudiant.fr",
+    studentId: "20210018",
+    program: "Master Informatique",
+  },
+  {
+    name: "Raphaël Roussel",
+    email: "raphael.roussel@etudiant.fr",
+    studentId: "20210019",
+    program: "Master Mathématiques",
+  },
+  {
+    name: "Alice Caron",
+    email: "alice.caron@etudiant.fr",
+    studentId: "20210020",
+    program: "Master Informatique",
+  },
+  {
+    name: "Jules Meunier",
+    email: "jules.meunier@etudiant.fr",
+    studentId: "20210021",
+    program: "Master Électronique",
+  },
+  {
+    name: "Louise Garnier",
+    email: "louise.garnier@etudiant.fr",
+    studentId: "20210022",
+    program: "Master Informatique",
+  },
+  {
+    name: "Adam Perrin",
+    email: "adam.perrin@etudiant.fr",
+    studentId: "20210023",
+    program: "Master Mathématiques",
+  },
+  {
+    name: "Eva Guerin",
+    email: "eva.guerin@etudiant.fr",
+    studentId: "20210024",
+    program: "Master Informatique",
+  },
 ]
 
 export async function POST() {
@@ -94,4 +166,3 @@ export async function POST() {
     return NextResponse.json({ error: "Failed to seed students" }, { status: 500 })
   }
 }
-

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server"
-import { dbConnect } from "@/lib/db"
+import dbConnect from "@/lib/db"
 import Project from "@/models/Project"
 import Student from "@/models/Student"
 import Professor from "@/models/Professor"
@@ -31,7 +32,6 @@ export async function POST(request: Request) {
 
     // Validate data structure
     for (const row of data) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const typedRow = row as any
       if (!typedRow.title || !typedRow.description || !typedRow.studentEmail || !typedRow.supervisorEmail) {
         return NextResponse.json(
@@ -46,7 +46,6 @@ export async function POST(request: Request) {
     const errors = []
 
     for (const row of data) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const typedRow = row as any
 
       try {
@@ -76,8 +75,8 @@ export async function POST(request: Request) {
           })
           insertedCount++
         }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
+        console.error(error);
         errors.push(`Error processing row: ${JSON.stringify(typedRow)}`)
       }
     }
@@ -92,4 +91,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to import projects" }, { status: 500 })
   }
 }
-

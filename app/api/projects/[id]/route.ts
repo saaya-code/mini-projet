@@ -1,28 +1,30 @@
 import { NextResponse } from "next/server"
-import { dbConnect } from "@/lib/db"
+import dbConnect from "@/lib/db"
 import Project from "@/models/Project"
 import Student from "@/models/Student"
 import Professor from "@/models/Professor"
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const resolvedParams = await params;
     await dbConnect()
-    const id = (await params)?.id; 
-    const project = await Project.findById(id).populate("student", "name").populate("supervisor", "name")
+    const project = await Project.findById(resolvedParams.id).populate("student", "name").populate("supervisor", "name")
 
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 })
     }
 
     return NextResponse.json(project)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
+    console.error(error);
+
     return NextResponse.json({ error: "Failed to fetch project" }, { status: 500 })
   }
 }
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const resolvedParams = await params;
     const body = await request.json()
     const { title, description, student, supervisor } = body
 
@@ -43,10 +45,10 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     if (!supervisorExists) {
       return NextResponse.json({ error: "Professor not found" }, { status: 404 })
     }
-    const id = (await params)?.id;
+
     // Check if another student already has a project (excluding current project)
     const existingProject = await Project.findOne({
-      _id: { $ne: id },
+      _id: { $ne: resolvedParams.id },
       student,
     })
 
@@ -60,7 +62,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     }
 
     const project = await Project.findByIdAndUpdate(
-      id,
+      resolvedParams.id,
       { title, description, student, supervisor },
       { new: true, runValidators: true },
     )
@@ -70,26 +72,29 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     }
 
     return NextResponse.json(project)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: "Failed to update project" }, { status: 500 })
   }
 }
 
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const resolvedParams = await params;
     await dbConnect()
-    const id = (await params)?.id;
-    const project = await Project.findByIdAndDelete(id)
+
+    const project = await Project.findByIdAndDelete(resolvedParams.id)
 
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 })
     }
 
     return NextResponse.json({ message: "Project deleted successfully" })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    return NextResponse.json({ error: "Failed to delete project" }, { status: 500 })
-  }
+    console.error(error);
+    return NextResponse.json({ error: "Failed to delete project" }, { status: 500 }) 
+
+  } 
 }
+
 

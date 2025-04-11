@@ -1,13 +1,11 @@
 import { NextResponse } from "next/server"
-import {dbConnect} from "@/lib/db"
-import Professor, { IProfessor, TimeSlot }  from "@/models/Professor"
+import dbConnect from "@/lib/db"
+import Professor, { type IProfessor, TimeSlot } from "@/models/Professor"
 import Project from "@/models/Project"
 import Room from "@/models/Room"
 import Defense from "@/models/Defense"
 
 // Helper function to check if a professor is available at a given time slot
-
-
 function isProfessorAvailable(professor: IProfessor, day: string, startTime: string, endTime: string) {
   return professor.availability.some(
     (slot: TimeSlot) => slot.day === day && slot.startTime <= startTime && slot.endTime >= endTime,
@@ -36,11 +34,12 @@ async function isProfessorAssignedElsewhere(professorId: string, date: string, s
     $and: [
       { $or: [{ juryPresident: professorId }, { juryReporter: professorId }] },
       { $or: [
-        { startTime: { $lt: endTime, $gte: startTime } },
-        { endTime: { $gt: startTime, $lte: endTime } },
-        { startTime: { $lte: startTime }, endTime: { $gte: endTime } },
-      ]},
-    ],
+          { startTime: { $lt: endTime, $gte: startTime } },
+          { endTime: { $gt: startTime, $lte: endTime } },
+          { startTime: { $lte: startTime }, endTime: { $gte: endTime } },
+        ] 
+      }
+    ]
   })
 
   return !!existingDefense
@@ -187,4 +186,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to generate schedule" }, { status: 500 })
   }
 }
-

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { dbConnect } from "@/lib/db"
+import dbConnect from "@/lib/db"
 import Room from "@/models/Room"
 
 // Mock data for rooms
@@ -78,4 +78,3 @@ export async function POST() {
     return NextResponse.json({ error: "Failed to seed rooms" }, { status: 500 })
   }
 }
-

@@ -7,7 +7,7 @@ export default function SeedPage() {
 
   return (
     <div>
-      <Header breadcrumbs={breadcrumbs} />
+      <Header  breadcrumbs={breadcrumbs} />
       <div className="container py-10">
         <PageHeader
           title="Initialisation de la Base de Données"
@@ -21,4 +21,3 @@ export default function SeedPage() {
     </div>
   )
 }
-

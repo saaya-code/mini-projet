@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import { useState, useEffect } from "react"
@@ -34,6 +33,7 @@ export default function SchedulePage() {
       const response = await fetch(`/api/defenses?date=${formattedDate}`)
       const data = await response.json()
       setDefenses(data)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Impossible de charger les soutenances")
     } finally {
@@ -60,6 +60,7 @@ export default function SchedulePage() {
 
       fetchDefenses(selectedDate!)
       setTab("view")
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Une erreur est survenue lors de la génération du planning")
     } finally {
@@ -131,4 +132,3 @@ export default function SchedulePage() {
     </div>
   )
 }
-

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import type React from "react"
@@ -61,6 +60,7 @@ export function ProjectForm({ onSuccess, project }: ProjectFormProps) {
 
         setStudents(studentsData)
         setProfessors(professorsData)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         toast.error("Erreur lors du chargement des données")
       } finally {
@@ -112,6 +112,7 @@ export function ProjectForm({ onSuccess, project }: ProjectFormProps) {
       }
 
       onSuccess()
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Une erreur est survenue lors de l'enregistrement")
     } finally {
@@ -194,4 +195,3 @@ export function ProjectForm({ onSuccess, project }: ProjectFormProps) {
     </form>
   )
 }
-

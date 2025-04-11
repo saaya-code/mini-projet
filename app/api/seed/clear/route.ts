@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server"
-import { dbConnect } from "@/lib/db"
+import dbConnect from "@/lib/db"
 import Professor from "@/models/Professor"
 import Student from "@/models/Student"
 import Project from "@/models/Project"
 import Room from "@/models/Room"
 import Defense from "@/models/Defense"
+import User from "@/models/User"
 
 export async function POST() {
   try {
@@ -16,6 +17,7 @@ export async function POST() {
     await Student.deleteMany({})
     await Professor.deleteMany({})
     await Room.deleteMany({})
+    await User.deleteMany({})
 
     return NextResponse.json({ message: "Database cleared successfully" })
   } catch (error) {
@@ -23,4 +25,3 @@ export async function POST() {
     return NextResponse.json({ error: "Failed to clear database" }, { status: 500 })
   }
 }
-

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { dbConnect } from "@/lib/db"
+import dbConnect from "@/lib/db"
 import Defense from "@/models/Defense"
 import Project from "@/models/Project"
 import Professor from "@/models/Professor"
@@ -97,4 +97,3 @@ export async function POST() {
     return NextResponse.json({ error: "Failed to seed defenses" }, { status: 500 })
   }
 }
-

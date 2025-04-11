@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { dbConnect } from "@/lib/db"
+import dbConnect from "@/lib/db"
 import Project from "@/models/Project"
 import Student from "@/models/Student"
 import Professor from "@/models/Professor"
@@ -12,8 +12,8 @@ export async function GET() {
       .populate("supervisor", "name")
       .sort({ title: 1 })
     return NextResponse.json(projects)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: "Failed to fetch projects" }, { status: 500 })
   }
 }
@@ -60,9 +60,8 @@ export async function POST(request: Request) {
     })
 
     return NextResponse.json(project, { status: 201 })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: "Failed to create project" }, { status: 500 })
   }
 }
-

@@ -166,4 +166,3 @@ export function AvailabilityForm({ professor, onSuccess }: AvailabilityFormProps
     </div>
   )
 }
-

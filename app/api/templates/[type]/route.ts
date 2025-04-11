@@ -3,7 +3,8 @@ import { utils, write } from "xlsx"
 
 export async function GET(request: Request, { params }: { params: Promise<{ type: string }> }) {
   try {
-    const type = (await params).type;
+    const resolvedParams = await params;
+    const type = resolvedParams.type
 
     // Create a new workbook
     const wb = utils.book_new()
@@ -99,8 +100,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ type
       headers,
     })
   } catch (error) {
-    console.error("Error generating template:", error)
+    console.error(error);
     return NextResponse.json({ error: "Failed to generate template" }, { status: 500 })
   }
 }
-

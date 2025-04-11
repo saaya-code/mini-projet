@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server"
-import { dbConnect } from "@/lib/db"
-import Professor, { IProfessor } from "@/models/Professor"
+import dbConnect from "@/lib/db"
+import Professor from "@/models/Professor"
 import { read, utils } from "xlsx"
 
 export async function POST(request: Request) {
@@ -29,7 +30,7 @@ export async function POST(request: Request) {
 
     // Validate data structure
     for (const row of data) {
-      const typedRow = row as IProfessor
+      const typedRow = row as any
       if (!typedRow.name || !typedRow.email || !typedRow.department) {
         return NextResponse.json(
           { error: "Invalid data format. Required columns: name, email, department" },
@@ -42,7 +43,7 @@ export async function POST(request: Request) {
     let insertedCount = 0
 
     for (const row of data) {
-      const typedRow = row as IProfessor
+      const typedRow = row as any
 
       // Check if professor already exists
       const existingProfessor = await Professor.findOne({ email: typedRow.email })
@@ -67,4 +68,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to import professors" }, { status: 500 })
   }
 }
-

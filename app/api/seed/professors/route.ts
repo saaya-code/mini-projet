@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { dbConnect } from "@/lib/db"
+import dbConnect from "@/lib/db"
 import Professor from "@/models/Professor"
 
 // Mock data for professors
@@ -18,6 +18,7 @@ const professorData = [
     name: "Dr. Marie Martin",
     email: "marie.martin@universite.fr",
     department: "Mathématiques",
+
     availability: [
       { day: "Mardi", startTime: "09:00", endTime: "12:00" },
       { day: "Jeudi", startTime: "14:00", endTime: "17:00" },
@@ -77,6 +78,69 @@ const professorData = [
       { day: "Jeudi", startTime: "09:00", endTime: "12:00" },
     ],
   },
+  {
+    name: "Dr. Laurent Girard",
+    email: "laurent.girard@universite.fr",
+    department: "Informatique",
+    availability: [
+      { day: "Lundi", startTime: "09:00", endTime: "12:00" },
+      { day: "Mardi", startTime: "14:00", endTime: "17:00" },
+    ],
+  },
+  {
+    name: "Dr. Nathalie Leroy",
+    email: "nathalie.leroy@universite.fr",
+    department: "Mathématiques",
+    availability: [
+      { day: "Mercredi", startTime: "09:00", endTime: "12:00" },
+      { day: "Vendredi", startTime: "14:00", endTime: "17:00" },
+    ],
+  },
+  {
+    name: "Dr. Michel Fournier",
+    email: "michel.fournier@universite.fr",
+    department: "Physique",
+    availability: [
+      { day: "Mardi", startTime: "09:00", endTime: "12:00" },
+      { day: "Jeudi", startTime: "14:00", endTime: "17:00" },
+    ],
+  },
+  {
+    name: "Dr. Isabelle Mercier",
+    email: "isabelle.mercier@universite.fr",
+    department: "Chimie",
+    availability: [
+      { day: "Lundi", startTime: "14:00", endTime: "17:00" },
+      { day: "Mercredi", startTime: "09:00", endTime: "12:00" },
+    ],
+  },
+  {
+    name: "Dr. François Blanc",
+    email: "francois.blanc@universite.fr",
+    department: "Informatique",
+    availability: [
+      { day: "Jeudi", startTime: "09:00", endTime: "12:00" },
+      { day: "Vendredi", startTime: "14:00", endTime: "17:00" },
+    ],
+  },
+  {
+    name: "Dr. Aurélie Roux",
+    email: "aurelie.roux@universite.fr",
+    department: "Électronique",
+    availability: [
+      { day: "Mardi", startTime: "09:00", endTime: "12:00" },
+      { day: "Jeudi", startTime: "14:00", endTime: "17:00" },
+    ],
+  },
+  {
+    name: "Dr. Julien Fabre",
+    email: "julien.fabre@universite.fr",
+    department: "Mathématiques",
+    availability: [
+      { day: "Lundi", startTime: "09:00", endTime: "12:00" },
+      { day: "Mercredi", startTime: "14:00", endTime: "17:00" },
+    ],
+  },
 ]
 
 export async function POST() {
@@ -95,4 +159,3 @@ export async function POST() {
     return NextResponse.json({ error: "Failed to seed professors" }, { status: 500 })
   }
 }
-

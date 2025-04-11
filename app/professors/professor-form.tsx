@@ -93,4 +93,3 @@ export function ProfessorForm({ onSuccess, professor }: ProfessorFormProps) {
     </form>
   )
 }
-

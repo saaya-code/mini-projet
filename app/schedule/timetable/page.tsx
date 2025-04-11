@@ -76,7 +76,7 @@ export default function TimetablePage() {
       const uniqueRooms = Array.from(
         new Set(data.map((defense: Defense) => JSON.stringify({ _id: defense.room._id, name: defense.room.name }))),
       ).map((room) => JSON.parse(room as string))
-
+  
       const uniqueTimeSlots = Array.from(
         new Set(data.map((defense: Defense) => JSON.stringify({ start: defense.startTime, end: defense.endTime }))),
       ).map((slot) => JSON.parse(slot as string))
@@ -113,7 +113,7 @@ export default function TimetablePage() {
 
   return (
     <div>
-      <Header breadcrumbs={breadcrumbs} />
+      <Header  breadcrumbs={breadcrumbs} />
       <div className="container py-10">
         <PageHeader
           title="Emploi du temps des Soutenances"
@@ -244,4 +244,3 @@ export default function TimetablePage() {
     </div>
   )
 }
-
