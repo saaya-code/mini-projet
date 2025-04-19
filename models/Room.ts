@@ -20,4 +20,3 @@ const RoomSchema = new Schema(
 )
 
 export default mongoose.models.Room || mongoose.model<IRoom>("Room", RoomSchema)
-

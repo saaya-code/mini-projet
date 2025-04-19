@@ -92,4 +92,3 @@ export function FileUploader({ onUpload, isUploading }: FileUploaderProps) {
     </div>
   )
 }
-

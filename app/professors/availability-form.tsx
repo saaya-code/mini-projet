@@ -81,7 +81,6 @@ export function AvailabilityForm({ professor, onSuccess }: AvailabilityFormProps
       toast.success("Disponibilités mises à jour avec succès")
 
       onSuccess()
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Une erreur est survenue lors de l'enregistrement")
     } finally {

@@ -37,7 +37,6 @@ export default function RoomsPage() {
       const response = await fetch("/api/rooms")
       const data = await response.json()
       setRooms(data)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Impossible de charger les salles")
     }
@@ -60,7 +59,7 @@ export default function RoomsPage() {
 
   return (
     <div>
-      <Header breadcrumbs={breadcrumbs} />
+      <Header title="Salles" breadcrumbs={breadcrumbs} />
       <div className="container py-10">
         <PageHeader title="Gestion des Salles" description="Gérez les salles disponibles pour les soutenances">
           <Button onClick={() => setActiveTab("add")}>Ajouter une salle</Button>
@@ -113,7 +112,7 @@ export default function RoomsPage() {
                           <TableCell>{room.floor}</TableCell>
                           <TableCell>{room.capacity} personnes</TableCell>
                           <TableCell>
-                            <Badge variant={room.isAvailable ? "default" : "destructive"}>
+                            <Badge variant={room.isAvailable ? "success" : "destructive"}>
                               {room.isAvailable ? "Disponible" : "Indisponible"}
                             </Badge>
                           </TableCell>

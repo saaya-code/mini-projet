@@ -2,9 +2,8 @@ import type { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { compare } from "bcrypt"
 import dbConnect from "@/lib/db"
-import User, {type IUser} from "@/models/User"
+import User from "@/models/User"
 
-type UserType = IUser & {_id: typeof Object}
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -18,10 +17,20 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
+        if (credentials.email === process.env.ADMIN_EMAIL || credentials.password === process.env.ADMIN_PASSWORD) {
+          return {
+            id: "ae58r9dptlf5gmlpo87t8y96",
+            email: credentials.email,
+            name: "Admin",
+            role: "admin",
+            image: "", // Replace with actual admin image path
+          }
+        }
+
         await dbConnect()
 
         try {
-          const user:UserType = await User.findOne({ email: credentials.email }).select("+password")
+          const user = await User.findOne({ email: credentials.email }).select("+password")
 
           if (!user) {
             return null
@@ -51,19 +60,14 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id
-        if ("role" in user) {
-          token.role = user.role
-        }
+        token.role = user.role
       }
       return token
     },
     async session({ session, token }) {
-      if (token && session && session.user) {
-        session.user = {
-          ...session.user,
-          id: token.id as string,
-          role: token.role as "admin" | "professor" | "student"
-        } as any
+      if (token) {
+        session.user.id = token.id as string
+        session.user.role = token.role as "admin" | "professor" | "student"
       }
       return session
     },

@@ -41,7 +41,6 @@ export default function ProjectsPage() {
       const response = await fetch("/api/projects")
       const data = await response.json()
       setProjects(data)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Impossible de charger les projets")
     }
@@ -64,7 +63,7 @@ export default function ProjectsPage() {
 
   return (
     <div>
-      <Header breadcrumbs={breadcrumbs} />
+      <Header title="Projets" breadcrumbs={breadcrumbs} />
       <div className="container py-10">
         <PageHeader title="Gestion des Projets" description="Gérez les projets de fin d'études">
           <Button onClick={() => setActiveTab("add")}>Ajouter un projet</Button>

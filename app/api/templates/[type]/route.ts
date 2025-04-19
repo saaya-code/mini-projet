@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server"
 import { utils, write } from "xlsx"
 
-export async function GET(request: Request, { params }: { params: Promise<{ type: string }> }) {
+export async function GET(request: Request, context: { params: Promise<{ type: string }> }) {
   try {
-    const resolvedParams = await params;
-    const type = resolvedParams.type
+    const params = await context.params
+    const type = params.type
 
     // Create a new workbook
     const wb = utils.book_new()
@@ -100,7 +100,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ type
       headers,
     })
   } catch (error) {
-    console.error(error);
+    console.error("Error generating template:", error)
     return NextResponse.json({ error: "Failed to generate template" }, { status: 500 })
   }
 }

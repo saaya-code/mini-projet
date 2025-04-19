@@ -13,7 +13,6 @@ export async function GET() {
       .sort({ title: 1 })
     return NextResponse.json(projects)
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ error: "Failed to fetch projects" }, { status: 500 })
   }
 }
@@ -61,7 +60,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json(project, { status: 201 })
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ error: "Failed to create project" }, { status: 500 })
   }
 }

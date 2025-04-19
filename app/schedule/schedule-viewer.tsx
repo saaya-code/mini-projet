@@ -77,7 +77,7 @@ export function ScheduleViewer({ date, defenses, isLoading }: ScheduleViewerProp
       <Alert>
         <InfoIcon className="h-4 w-4" />
         <AlertTitle>Information</AlertTitle>
-        <AlertDescription>Aucune soutenance n&apos;est planifiée pour cette date.</AlertDescription>
+        <AlertDescription>Aucune soutenance n'est planifiée pour cette date.</AlertDescription>
       </Alert>
     )
   }

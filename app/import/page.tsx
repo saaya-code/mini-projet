@@ -61,7 +61,7 @@ export default function ImportPage() {
 
   return (
     <div>
-      <Header breadcrumbs={breadcrumbs} />
+      <Header title="Importer des données" breadcrumbs={breadcrumbs} />
       <div className="container py-10">
         <PageHeader title="Importer des données" description="Importez des données depuis des fichiers Excel ou CSV" />
 
@@ -127,10 +127,10 @@ export default function ImportPage() {
                       Le fichier doit contenir les colonnes suivantes :
                     </p>
                     <ul className="list-disc pl-5 text-sm text-muted-foreground">
-                      <li>name (Nom de l&apos;étudiant)</li>
-                      <li>email (Email de l&apos;étudiant)</li>
-                      <li>studentId (Numéro d&apos;étudiant)</li>
-                      <li>program (Programme d&apos;études)</li>
+                      <li>name (Nom de l'étudiant)</li>
+                      <li>email (Email de l'étudiant)</li>
+                      <li>studentId (Numéro d'étudiant)</li>
+                      <li>program (Programme d'études)</li>
                     </ul>
                   </div>
 
@@ -159,7 +159,7 @@ export default function ImportPage() {
                     <ul className="list-disc pl-5 text-sm text-muted-foreground">
                       <li>title (Titre du projet)</li>
                       <li>description (Description du projet)</li>
-                      <li>studentEmail (Email de l&apos;étudiant)</li>
+                      <li>studentEmail (Email de l'étudiant)</li>
                       <li>supervisorEmail (Email du superviseur)</li>
                     </ul>
                   </div>
@@ -191,7 +191,7 @@ export default function ImportPage() {
                       <li>capacity (Capacité)</li>
                       <li>building (Bâtiment)</li>
                       <li>floor (Étage)</li>
-                      <li>isAvailable (Disponibilité, &quot;true&quot; ou &quot;false&quot;)</li>
+                      <li>isAvailable (Disponibilité, "true" ou "false")</li>
                     </ul>
                   </div>
 

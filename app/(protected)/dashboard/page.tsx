@@ -18,13 +18,13 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <Header  breadcrumbs={breadcrumbs} />
+      <Header title="Tableau de bord" breadcrumbs={breadcrumbs} />
       <div className="container py-10">
-        <PageHeader title={`Bienvenue, ${session?.user?.name}`} description="Votre tableau de bord personnalisé" />
+        <PageHeader title={`Bienvenue, ${session.user.name}`} description="Votre tableau de bord personnalisé" />
 
-        {session?.user?.role === "admin" && <AdminDashboard />}
-        {session?.user?.role === "professor" && <ProfessorDashboard userId={session?.user?.id} />}
-        {session?.user?.role === "student" && <StudentDashboard userId={session?.user?.id} />}
+        {session.user.role === "admin" && <AdminDashboard />}
+        {session.user.role === "professor" && <ProfessorDashboard userId={session.user.id} />}
+        {session.user.role === "student" && <StudentDashboard userId={session.user.id} />}
       </div>
     </div>
   )

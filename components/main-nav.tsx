@@ -13,6 +13,8 @@ import {
   Database,
   LayoutDashboard,
   User,
+  Clock,
+  FileText,
 } from "lucide-react"
 
 type UserRole = "admin" | "professor" | "student" | undefined
@@ -20,7 +22,7 @@ type UserRole = "admin" | "professor" | "student" | undefined
 export function MainNav({ userRole }: { userRole?: UserRole }) {
   const pathname = usePathname()
 
-  // Admin routes
+  // Admin routes - full access to everything
   const adminRoutes = [
     {
       href: "/dashboard",
@@ -43,7 +45,7 @@ export function MainNav({ userRole }: { userRole?: UserRole }) {
     {
       href: "/projects",
       label: "Projets",
-      icon: CalendarDays,
+      icon: FileText,
       active: pathname.startsWith("/projects"),
     },
     {
@@ -72,7 +74,7 @@ export function MainNav({ userRole }: { userRole?: UserRole }) {
     },
   ]
 
-  // Professor routes
+  // Professor routes - only their own data and availability
   const professorRoutes = [
     {
       href: "/dashboard",
@@ -89,7 +91,7 @@ export function MainNav({ userRole }: { userRole?: UserRole }) {
     {
       href: "/professor/availability",
       label: "Mes disponibilités",
-      icon: Calendar,
+      icon: Clock,
       active: pathname.startsWith("/professor/availability"),
     },
     {
@@ -100,7 +102,7 @@ export function MainNav({ userRole }: { userRole?: UserRole }) {
     },
   ]
 
-  // Student routes
+  // Student routes - only their own project and defense
   const studentRoutes = [
     {
       href: "/dashboard",
@@ -117,7 +119,7 @@ export function MainNav({ userRole }: { userRole?: UserRole }) {
     {
       href: "/student/project",
       label: "Mon projet",
-      icon: CalendarDays,
+      icon: FileText,
       active: pathname.startsWith("/student/project"),
     },
     {

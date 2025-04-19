@@ -2,26 +2,29 @@ import { NextResponse } from "next/server"
 import dbConnect from "@/lib/db"
 import Professor from "@/models/Professor"
 
-export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    const resolvedParams = await params;
-    await dbConnect();
-    const professor = await Professor.findById(resolvedParams.id);
+    const params = await context.params
+    const id = params.id
+
+    await dbConnect()
+    const professor = await Professor.findById(id)
 
     if (!professor) {
-      return NextResponse.json({ error: "Professor not found" }, { status: 404 });
+      return NextResponse.json({ error: "Professor not found" }, { status: 404 })
     }
 
-    return NextResponse.json(professor);
+    return NextResponse.json(professor)
   } catch (error) {
-    console.log(error);
-    return NextResponse.json({ error: "Failed to fetch professor" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch professor" }, { status: 500 })
   }
 }
 
-export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    const resolvedParams = await params;
+    const params = await context.params
+    const id = params.id
+
     const body = await request.json()
     const { name, email, department } = body
 
@@ -32,7 +35,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     await dbConnect()
 
     const professor = await Professor.findByIdAndUpdate(
-      resolvedParams.id,
+      id,
       { name, email, department },
       { new: true, runValidators: true },
     )
@@ -43,17 +46,18 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
     return NextResponse.json(professor)
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error: "Failed to update professor" }, { status: 500 })
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    const resolvedParams = await params;
+    const params = await context.params
+    const id = params.id
+
     await dbConnect()
 
-    const professor = await Professor.findByIdAndDelete(resolvedParams.id)
+    const professor = await Professor.findByIdAndDelete(id)
 
     if (!professor) {
       return NextResponse.json({ error: "Professor not found" }, { status: 404 })
@@ -61,7 +65,6 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 
     return NextResponse.json({ message: "Professor deleted successfully" })
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error: "Failed to delete professor" }, { status: 500 })
   }
 }

@@ -175,7 +175,7 @@ export default function SeedDatabase() {
                   <span className="font-medium">Professeurs:</span> [email du professeur] / password123
                 </p>
                 <p>
-                  <span className="font-medium">Étudiants:</span> [email de l&apos;étudiant] / password123
+                  <span className="font-medium">Étudiants:</span> [email de l'étudiant] / password123
                 </p>
               </div>
             </div>

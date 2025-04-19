@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import { preloadModels } from "./models"
 
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/defense-planning"
 
@@ -19,6 +20,8 @@ async function dbConnect() {
     }
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+      // Preload all models to ensure they're registered
+      preloadModels()
       return mongoose
     })
   }

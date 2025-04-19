@@ -6,6 +6,7 @@ export default async function Home() {
   const session = await getServerSession(authOptions)
 
   if (session) {
+    // Redirect to the appropriate dashboard based on role
     redirect("/dashboard")
   } else {
     redirect("/login")

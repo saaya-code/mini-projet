@@ -1,8 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server"
 import dbConnect from "@/lib/db"
 import Professor from "@/models/Professor"
+import User from "@/models/User"
 import { read, utils } from "xlsx"
+import { generatePassword, sendWelcomeEmail } from "@/lib/email"
 
 export async function POST(request: Request) {
   try {
@@ -41,23 +42,52 @@ export async function POST(request: Request) {
 
     // Insert professors
     let insertedCount = 0
+    const emailPromises = []
 
     for (const row of data) {
       const typedRow = row as any
 
       // Check if professor already exists
       const existingProfessor = await Professor.findOne({ email: typedRow.email })
+      const existingUser = await User.findOne({ email: typedRow.email })
 
-      if (!existingProfessor) {
-        await Professor.create({
+      if (!existingProfessor && !existingUser) {
+        // Create professor
+        const professor = await Professor.create({
           name: typedRow.name,
           email: typedRow.email,
           department: typedRow.department,
           availability: [],
         })
+
+        // Generate password
+        const password = generatePassword()
+
+        // Create user
+        await User.create({
+          name: typedRow.name,
+          email: typedRow.email,
+          password,
+          role: "professor",
+          professorId: professor._id,
+        })
+
+        // Queue email sending (don't await here to process in parallel)
+        emailPromises.push(
+          sendWelcomeEmail({
+            email: typedRow.email,
+            name: typedRow.name,
+            password,
+            role: "professor",
+          }),
+        )
+
         insertedCount++
       }
     }
+
+    // Wait for all emails to be sent
+    await Promise.allSettled(emailPromises)
 
     return NextResponse.json({
       message: "Professors imported successfully",

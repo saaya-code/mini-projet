@@ -62,7 +62,6 @@ export function ProfessorForm({ onSuccess, professor }: ProfessorFormProps) {
       }
 
       onSuccess()
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Une erreur est survenue lors de l'enregistrement")
     } finally {

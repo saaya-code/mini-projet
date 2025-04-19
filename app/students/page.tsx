@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import { useState, useEffect } from "react"
@@ -58,7 +57,7 @@ export default function StudentsPage() {
 
   return (
     <div>
-      <Header breadcrumbs={breadcrumbs} />
+      <Header title="Étudiants" breadcrumbs={breadcrumbs} />
       <div className="container py-10">
         <PageHeader title="Gestion des Étudiants" description="Gérez les informations des étudiants">
           <Button onClick={() => setActiveTab("add")}>Ajouter un étudiant</Button>
@@ -97,7 +96,7 @@ export default function StudentsPage() {
                       <TableRow>
                         <TableHead>Nom</TableHead>
                         <TableHead>Email</TableHead>
-                        <TableHead>Numéro d&apos;étudiant</TableHead>
+                        <TableHead>Numéro d'étudiant</TableHead>
                         <TableHead>Programme</TableHead>
                         <TableHead>Actions</TableHead>
                       </TableRow>

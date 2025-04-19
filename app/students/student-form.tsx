@@ -65,7 +65,6 @@ export function StudentForm({ onSuccess, student }: StudentFormProps) {
       }
 
       onSuccess()
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Une erreur est survenue lors de l'enregistrement")
     } finally {
@@ -86,7 +85,7 @@ export function StudentForm({ onSuccess, student }: StudentFormProps) {
       </div>
 
       <div className="grid gap-2">
-        <Label htmlFor="studentId">Numéro d&apos;étudiant</Label>
+        <Label htmlFor="studentId">Numéro d'étudiant</Label>
         <Input id="studentId" name="studentId" value={formData.studentId} onChange={handleChange} required />
       </div>
 

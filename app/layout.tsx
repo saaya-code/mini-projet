@@ -2,7 +2,7 @@ import type React from "react"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "next-themes"
 import { Toaster } from "@/components/ui/sonner"
-import { Sidebar } from "@/components/layout/sidebar"
+import { SessionProvider } from "@/providers/session-provider"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -15,15 +15,12 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <div className="flex min-h-screen">
-            <Sidebar />
-            <div className="flex-1 md:pl-64">
-              <main className="flex-1">{children}</main>
-            </div>
-          </div>
-          <Toaster />
-        </ThemeProvider>
+        <SessionProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   )

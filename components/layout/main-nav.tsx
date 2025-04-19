@@ -3,17 +3,32 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { CalendarDays, Users, GraduationCap, DoorOpen, Calendar, Upload, Home, Database } from "lucide-react"
+import {
+  CalendarDays,
+  Users,
+  GraduationCap,
+  DoorOpen,
+  Calendar,
+  Upload,
+  Database,
+  LayoutDashboard,
+  User,
+  Clock,
+  FileText,
+} from "lucide-react"
 
-export function MainNav() {
+type UserRole = "admin" | "professor" | "student" | undefined
+
+export function MainNav({ userRole }: { userRole?: UserRole }) {
   const pathname = usePathname()
 
-  const routes = [
+  // Admin routes - full access to everything
+  const adminRoutes = [
     {
-      href: "/",
+      href: "/dashboard",
       label: "Tableau de bord",
-      icon: Home,
-      active: pathname === "/",
+      icon: LayoutDashboard,
+      active: pathname === "/dashboard",
     },
     {
       href: "/professors",
@@ -30,7 +45,7 @@ export function MainNav() {
     {
       href: "/projects",
       label: "Projets",
-      icon: CalendarDays,
+      icon: FileText,
       active: pathname.startsWith("/projects"),
     },
     {
@@ -59,6 +74,70 @@ export function MainNav() {
     },
   ]
 
+  // Professor routes - only their own data and availability
+  const professorRoutes = [
+    {
+      href: "/dashboard",
+      label: "Tableau de bord",
+      icon: LayoutDashboard,
+      active: pathname === "/dashboard",
+    },
+    {
+      href: "/professor/profile",
+      label: "Mon profil",
+      icon: User,
+      active: pathname.startsWith("/professor/profile"),
+    },
+    {
+      href: "/professor/availability",
+      label: "Mes disponibilités",
+      icon: Clock,
+      active: pathname.startsWith("/professor/availability"),
+    },
+    {
+      href: "/professor/defenses",
+      label: "Mes soutenances",
+      icon: CalendarDays,
+      active: pathname.startsWith("/professor/defenses"),
+    },
+  ]
+
+  // Student routes - only their own project and defense
+  const studentRoutes = [
+    {
+      href: "/dashboard",
+      label: "Tableau de bord",
+      icon: LayoutDashboard,
+      active: pathname === "/dashboard",
+    },
+    {
+      href: "/student/profile",
+      label: "Mon profil",
+      icon: User,
+      active: pathname.startsWith("/student/profile"),
+    },
+    {
+      href: "/student/project",
+      label: "Mon projet",
+      icon: FileText,
+      active: pathname.startsWith("/student/project"),
+    },
+    {
+      href: "/student/defense",
+      label: "Ma soutenance",
+      icon: Calendar,
+      active: pathname.startsWith("/student/defense"),
+    },
+  ]
+
+  // Select routes based on user role
+  let routes = adminRoutes
+  if (userRole === "professor") {
+    routes = professorRoutes
+  } else if (userRole === "student") {
+    routes = studentRoutes
+  }
+
   return (
     <nav className="flex flex-col gap-2 w-full">
       {routes.map((route) => (
@@ -77,4 +156,3 @@ export function MainNav() {
     </nav>
   )
 }
-

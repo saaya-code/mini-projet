@@ -38,7 +38,6 @@ export async function GET(request: Request) {
 
     return NextResponse.json(defenses)
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ error: "Failed to fetch defenses" }, { status: 500 })
   }
 }

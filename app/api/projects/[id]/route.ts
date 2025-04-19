@@ -4,11 +4,13 @@ import Project from "@/models/Project"
 import Student from "@/models/Student"
 import Professor from "@/models/Professor"
 
-export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    const resolvedParams = await params;
+    const params = await context.params
+    const id = params.id
+
     await dbConnect()
-    const project = await Project.findById(resolvedParams.id).populate("student", "name").populate("supervisor", "name")
+    const project = await Project.findById(id).populate("student", "name").populate("supervisor", "name")
 
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 })
@@ -16,15 +18,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
     return NextResponse.json(project)
   } catch (error) {
-    console.error(error);
-
     return NextResponse.json({ error: "Failed to fetch project" }, { status: 500 })
   }
 }
 
-export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    const resolvedParams = await params;
+    const params = await context.params
+    const id = params.id
+
     const body = await request.json()
     const { title, description, student, supervisor } = body
 
@@ -48,7 +50,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
     // Check if another student already has a project (excluding current project)
     const existingProject = await Project.findOne({
-      _id: { $ne: resolvedParams.id },
+      _id: { $ne: id },
       student,
     })
 
@@ -62,7 +64,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     }
 
     const project = await Project.findByIdAndUpdate(
-      resolvedParams.id,
+      id,
       { title, description, student, supervisor },
       { new: true, runValidators: true },
     )
@@ -73,17 +75,18 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
     return NextResponse.json(project)
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ error: "Failed to update project" }, { status: 500 })
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    const resolvedParams = await params;
+    const params = await context.params
+    const id = params.id
+
     await dbConnect()
 
-    const project = await Project.findByIdAndDelete(resolvedParams.id)
+    const project = await Project.findByIdAndDelete(id)
 
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 })
@@ -91,10 +94,6 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 
     return NextResponse.json({ message: "Project deleted successfully" })
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: "Failed to delete project" }, { status: 500 }) 
-
-  } 
+    return NextResponse.json({ error: "Failed to delete project" }, { status: 500 })
+  }
 }
-
-

@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server"
 import dbConnect from "@/lib/db"
 import Student from "@/models/Student"
+import User from "@/models/User"
 import { read, utils } from "xlsx"
+import { generatePassword, sendWelcomeEmail } from "@/lib/email"
 
 export async function POST(request: Request) {
   try {
@@ -40,6 +42,7 @@ export async function POST(request: Request) {
 
     // Insert students
     let insertedCount = 0
+    const emailPromises = []
 
     for (const row of data) {
       const typedRow = row as any
@@ -49,16 +52,45 @@ export async function POST(request: Request) {
         $or: [{ email: typedRow.email }, { studentId: typedRow.studentId }],
       })
 
-      if (!existingStudent) {
-        await Student.create({
+      const existingUser = await User.findOne({ email: typedRow.email })
+
+      if (!existingStudent && !existingUser) {
+        // Create student
+        const student = await Student.create({
           name: typedRow.name,
           email: typedRow.email,
           studentId: typedRow.studentId,
           program: typedRow.program,
         })
+
+        // Generate password
+        const password = generatePassword()
+
+        // Create user
+        await User.create({
+          name: typedRow.name,
+          email: typedRow.email,
+          password,
+          role: "student",
+          studentId: student._id,
+        })
+
+        // Queue email sending (don't await here to process in parallel)
+        emailPromises.push(
+          sendWelcomeEmail({
+            email: typedRow.email,
+            name: typedRow.name,
+            password,
+            role: "student",
+          }),
+        )
+
         insertedCount++
       }
     }
+
+    // Wait for all emails to be sent
+    await Promise.allSettled(emailPromises)
 
     return NextResponse.json({
       message: "Students imported successfully",

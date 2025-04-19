@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import dbConnect from "@/lib/db"
 import Student from "@/models/Student"
+import User from "@/models/User"
+import { generatePassword, sendWelcomeEmail } from "@/lib/email"
 
 // Mock data for students
 const studentData = [
@@ -155,7 +157,39 @@ export async function POST() {
     await dbConnect()
 
     // Insert students
-    const result = await Student.insertMany(studentData)
+    const result = []
+    const emailPromises = []
+
+    for (const data of studentData) {
+      // Create student
+      const student = await Student.create(data)
+      result.push(student)
+
+      // Generate password
+      const password = generatePassword()
+
+      // Create user
+      await User.create({
+        name: data.name,
+        email: data.email,
+        password,
+        role: "student",
+        studentId: student._id,
+      })
+
+      // Queue email sending
+      emailPromises.push(
+        sendWelcomeEmail({
+          email: data.email,
+          name: data.name,
+          password,
+          role: "student",
+        }),
+      )
+    }
+
+    // Wait for all emails to be sent
+    await Promise.allSettled(emailPromises)
 
     return NextResponse.json({
       message: "Students seeded successfully",

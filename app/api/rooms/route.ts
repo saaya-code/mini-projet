@@ -8,8 +8,6 @@ export async function GET() {
     const rooms = await Room.find({}).sort({ building: 1, floor: 1, name: 1 })
     return NextResponse.json(rooms)
   } catch (error) {
-    console.error(error);
-
     return NextResponse.json({ error: "Failed to fetch rooms" }, { status: 500 })
   }
 }
@@ -46,8 +44,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json(room, { status: 201 })
   } catch (error) {
-    console.error(error);
-
     return NextResponse.json({ error: "Failed to create room" }, { status: 500 })
   }
 }

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server"
 import dbConnect from "@/lib/db"
 import Project from "@/models/Project"
@@ -76,7 +75,6 @@ export async function POST(request: Request) {
           insertedCount++
         }
       } catch (error) {
-        console.error(error);
         errors.push(`Error processing row: ${JSON.stringify(typedRow)}`)
       }
     }

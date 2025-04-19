@@ -1,35 +1,59 @@
 "use client"
-
-import { useSession } from "next-auth/react"
-import { MainNav } from "./main-nav"
-import { Logo } from "./logo"
-import { ModeToggle } from "./mode-toggle"
-import { Skeleton } from "@/components/ui/skeleton"
+import { usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
+import { ModeToggle } from "@/components/layout/mode-toggle"
+import { MainNav } from "@/components/layout/main-nav"
+import { Logo } from "@/components/layout/logo"
+import { Button } from "@/components/ui/button"
+import { signOut, useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 export function Sidebar() {
-  const { data: session, status } = useSession()
+  const [mounted, setMounted] = useState(false)
+  const pathname = usePathname()
+  const { data: session } = useSession()
+  const router = useRouter()
+  const [isSigningOut, setIsSigningOut] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Filter nav items based on user role
+  const userRole = session?.user?.role
+  const handleSignOut = async () => {
+    setIsSigningOut(true)
+    try {
+      await signOut({ redirect: false })
+      router.push("/login")
+      toast.success("Déconnexion réussie")
+    } catch (error) {
+      console.error("Error signing out:", error)
+      setIsSigningOut(false)
+      toast.error("Erreur lors de la déconnexion")
+    }
+  }
+
+  if (!mounted) {
+    return null
+  }
 
   return (
-    <div className="fixed inset-y-0 left-0 z-10 w-64 border-r bg-background hidden md:flex flex-col">
-      <div className="p-6">
-        <Logo />
-      </div>
-      <div className="flex-1 px-4 py-2">
-        {status === "loading" ? (
-          <div className="space-y-2">
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
-          </div>
-        ) : (
-          <MainNav userRole={session?.user?.role} />
-        )}
-      </div>
-      <div className="p-4 border-t flex justify-between items-center">
-        <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Système de Planification</p>
-        <ModeToggle />
+    <div className="hidden md:block fixed top-0 left-0 h-full w-64 border-r bg-background z-50">
+      <div className="flex flex-col h-full">
+        <div className="flex items-center justify-between h-16 px-6 border-b">
+          <Logo />
+          <ModeToggle />
+        </div>
+        <div className="flex-1 overflow-y-auto p-6">
+          <MainNav userRole={userRole} />
+        </div>
+        <div className="p-6 border-t">
+          <Button variant="outline" className="w-full" onClick={handleSignOut} disabled={isSigningOut}>
+            {isSigningOut ? "Déconnexion..." : "Se déconnecter"}
+          </Button>
+        </div>
       </div>
     </div>
   )

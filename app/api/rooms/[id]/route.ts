@@ -2,11 +2,13 @@ import { NextResponse } from "next/server"
 import dbConnect from "@/lib/db"
 import Room from "@/models/Room"
 
-export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    const resolvedParams = await params;
+    const params = await context.params
+    const id = params.id
+
     await dbConnect()
-    const room = await Room.findById(resolvedParams.id)
+    const room = await Room.findById(id)
 
     if (!room) {
       return NextResponse.json({ error: "Room not found" }, { status: 404 })
@@ -14,14 +16,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
     return NextResponse.json(room)
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error: "Failed to fetch room" }, { status: 500 })
   }
 }
 
-export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    const resolvedParams = await params;
+    const params = await context.params
+    const id = params.id
+
     const body = await request.json()
     const { name, capacity, building, floor, isAvailable } = body
 
@@ -33,7 +36,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
     // Check if another room has the same name
     const existingRoom = await Room.findOne({
-      _id: { $ne: resolvedParams.id },
+      _id: { $ne: id },
       name,
     })
 
@@ -47,7 +50,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     }
 
     const room = await Room.findByIdAndUpdate(
-      resolvedParams.id,
+      id,
       { name, capacity, building, floor, isAvailable },
       { new: true, runValidators: true },
     )
@@ -58,17 +61,18 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
     return NextResponse.json(room)
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ error: "Failed to update room" }, { status: 500 })
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    const resolvedParams = await params;
+    const params = await context.params
+    const id = params.id
+
     await dbConnect()
 
-    const room = await Room.findByIdAndDelete(resolvedParams.id)
+    const room = await Room.findByIdAndDelete(id)
 
     if (!room) {
       return NextResponse.json({ error: "Room not found" }, { status: 404 })
@@ -76,7 +80,6 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 
     return NextResponse.json({ message: "Room deleted successfully" })
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ error: "Failed to delete room" }, { status: 500 })
   }
 }

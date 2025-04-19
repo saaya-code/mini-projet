@@ -40,7 +40,6 @@ export default function ProfessorsPage() {
       const response = await fetch("/api/professors")
       const data = await response.json()
       setProfessors(data)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Impossible de charger les professeurs")
     }
@@ -62,7 +61,7 @@ export default function ProfessorsPage() {
 
   return (
     <div>
-      <Header  breadcrumbs={breadcrumbs} />
+      <Header title="Professeurs" breadcrumbs={breadcrumbs} />
       <div className="container py-10">
         <PageHeader title="Gestion des Professeurs" description="Gérez les professeurs et leurs disponibilités">
           <Button onClick={() => setActiveTab("add")}>Ajouter un professeur</Button>

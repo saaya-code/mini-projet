@@ -75,18 +75,17 @@ export default function TimetablePage() {
       // Extract unique rooms and time slots
       const uniqueRooms = Array.from(
         new Set(data.map((defense: Defense) => JSON.stringify({ _id: defense.room._id, name: defense.room.name }))),
-      ).map((room) => JSON.parse(room as string))
-  
+      ).map((room) => JSON.parse(room))
+
       const uniqueTimeSlots = Array.from(
         new Set(data.map((defense: Defense) => JSON.stringify({ start: defense.startTime, end: defense.endTime }))),
-      ).map((slot) => JSON.parse(slot as string))
+      ).map((slot) => JSON.parse(slot))
 
       // Sort time slots chronologically
       uniqueTimeSlots.sort((a, b) => a.start.localeCompare(b.start))
 
       setRooms(uniqueRooms)
       setTimeSlots(uniqueTimeSlots)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Impossible de charger les soutenances")
     } finally {
@@ -113,7 +112,7 @@ export default function TimetablePage() {
 
   return (
     <div>
-      <Header  breadcrumbs={breadcrumbs} />
+      <Header title="Emploi du temps" breadcrumbs={breadcrumbs} />
       <div className="container py-10">
         <PageHeader
           title="Emploi du temps des Soutenances"
@@ -148,7 +147,7 @@ export default function TimetablePage() {
                     <span>{selectedDate ? formatDateHeader(selectedDate) : "Sélectionnez une date"}</span>
                   </div>
                 </CardTitle>
-                <Badge variant={defenses.length > 0 ? "default" : "secondary"}>{defenses.length} soutenances</Badge>
+                <Badge variant={defenses.length > 0 ? "success" : "secondary"}>{defenses.length} soutenances</Badge>
               </div>
             </CardHeader>
             <CardContent>
@@ -161,7 +160,7 @@ export default function TimetablePage() {
                 </div>
               ) : defenses.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">
-                  Aucune soutenance n&apos;est planifiée pour cette date.
+                  Aucune soutenance n'est planifiée pour cette date.
                 </div>
               ) : (
                 <div className="overflow-x-auto">
