@@ -1,160 +1,157 @@
-# UniDefense - University Defense Planning System
+# UniDefense - Système de Planification des Soutenances
 
-UniDefense is a comprehensive web application designed to streamline the planning and management of student defense sessions in academic institutions. It provides an intuitive interface for administrators, professors, and students to coordinate defense schedules efficiently.
+![UniDefense Logo](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9a45-KXV32g7AcuYFtRqbas8BMG2Nansr6g&s)
 
-![UniDefense Dashboard](https://placeholder.svg?height=400&width=800)
+UniDefense est une application web complète pour la gestion et la planification automatique des soutenances de fin d'études universitaires. Elle permet aux administrateurs, professeurs et étudiants de gérer efficacement tout le processus de soutenance, depuis l'attribution des projets jusqu'à la planification des défenses.
 
-## Features
+## 🌟 Fonctionnalités
 
-### For Administrators
-- **User Management**: Create and manage professor and student accounts
-- **Schedule Generation**: Automatically generate optimal defense schedules for single days or date ranges
-- **Room Management**: Manage available rooms and their availability
-- **Data Import/Export**: Import and export data in various formats
-- **System Monitoring**: Monitor system activity and performance
+### Pour les Administrateurs
+- Gestion complète des professeurs, étudiants, projets et salles
+- Génération automatique des plannings de soutenance (jour unique ou période)
+- Importation de données depuis des fichiers Excel ou CSV
+- Tableau de bord avec statistiques et activités récentes
+- Gestion des utilisateurs et des rôles
 
-### For Professors
-- **Availability Management**: Set and update availability for defense participation
-- **Defense Schedule**: View assigned defenses as jury president or reporter
-- **Student Supervision**: Manage supervised student projects
-- **Notifications**: Receive real-time notifications about schedule changes
+### Pour les Professeurs
+- Gestion de leur profil et disponibilités
+- Visualisation des soutenances où ils sont impliqués (superviseur ou jury)
+- Système de notifications pour les nouvelles soutenances
+- Communication avec les étudiants
 
-### For Students
-- **Project Management**: View and update project information
-- **Defense Schedule**: Access defense details including time, location, and jury members
-- **Notifications**: Receive important updates about defense scheduling
+### Pour les Étudiants
+- Consultation de leur profil et projet
+- Visualisation des détails de leur soutenance
+- Système de notifications pour les mises à jour
+- Communication avec leur superviseur
 
-## Technical Stack
+## 🚀 Technologies Utilisées
 
-- **Frontend**: Next.js 14, React, Tailwind CSS, shadcn/ui
+- **Frontend**: Next.js, React, Tailwind CSS, shadcn/ui
 - **Backend**: Next.js API Routes, MongoDB
-- **Authentication**: NextAuth.js
-- **Email**: NodeMailer
-- **Deployment**: Vercel (recommended)
+- **Authentification**: NextAuth.js
+- **Emails**: Nodemailer
+- **Importation de données**: xlsx
 
-## Installation
+## 📋 Prérequis
 
-### Prerequisites
-- Node.js 18+ and npm/yarn
-- MongoDB database
-- SMTP server for email notifications
+- Node.js 18+
+- MongoDB
+- Serveur SMTP pour l'envoi d'emails
 
-### Setup Instructions
+## 🛠️ Installation
 
-1. Clone the repository:
+1. Clonez le dépôt
    \`\`\`bash
-   git clone https://github.com/yourusername/unidefense.git
+   git clone https://github.com/votre-utilisateur/unidefense.git
    cd unidefense
    \`\`\`
 
-2. Install dependencies:
+2. Installez les dépendances
    \`\`\`bash
    npm install
-   # or
-   yarn install
    \`\`\`
 
-3. Create a `.env.local` file with the following variables:
-   \`\`\`
-   # MongoDB
-   MONGODB_URI=your_mongodb_connection_string
-
-   # NextAuth
-   NEXTAUTH_URL=http://localhost:3000
-   NEXTAUTH_SECRET=your_nextauth_secret
-
-   # Email (NodeMailer)
-   EMAIL_SERVER_HOST=your_smtp_host
-   EMAIL_SERVER_PORT=your_smtp_port
-   EMAIL_SERVER_USER=your_smtp_username
-   EMAIL_SERVER_PASSWORD=your_smtp_password
-   EMAIL_FROM=noreply@yourdomain.com
+3. Configurez les variables d'environnement
+   \`\`\`bash
+   cp .env.local.example .env.local
+   # Modifiez les valeurs dans .env.local selon votre configuration
    \`\`\`
 
-4. Run the development server:
+4. Lancez l'application en mode développement
    \`\`\`bash
    npm run dev
-   # or
-   yarn dev
    \`\`\`
 
-5. Access the application at `http://localhost:3000`
+5. Accédez à l'application à l'adresse [http://localhost:3000](http://localhost:3000)
 
-## Schedule Generation Algorithm
+## 🧠 Algorithme de Génération des Plannings
 
-The schedule generation algorithm is the core of UniDefense. It works as follows:
+L'algorithme de génération des plannings est au cœur du système UniDefense. Il prend en compte plusieurs contraintes pour créer un planning optimal :
 
-### Single-Day Scheduling
-1. **Input Collection**: Gathers all projects, professors, rooms, and their availability
-2. **Constraint Checking**: Validates professor availability, room availability, and scheduling rules
-3. **Slot Assignment**: Assigns each project to an available time slot, room, and jury members
-4. **Notification**: Sends notifications to all involved parties
+### Contraintes prises en compte
+- **Disponibilité des professeurs**: Chaque professeur indique ses créneaux de disponibilité
+- **Disponibilité des salles**: Les salles doivent être disponibles et adaptées
+- **Répartition des rôles**: Un professeur ne peut pas être à la fois superviseur et membre du jury pour un même étudiant
+- **Équilibre des charges**: Répartition équitable des soutenances entre les professeurs
+- **Contraintes temporelles**: Respect des pauses et des horaires de travail
 
-### Multi-Day Scheduling
-1. **Date Range Processing**: Processes each workday in the selected range (excluding weekends)
-2. **Project Distribution**: Distributes projects across available days based on constraints
-3. **Optimization**: Ensures even distribution and maximizes resource utilization
-4. **Tracking**: Tracks scheduled projects to avoid duplicates
+### Fonctionnement de l'algorithme
+1. **Préparation**: Collecte des données (projets, professeurs, salles, disponibilités)
+2. **Planification jour par jour**:
+   - Pour chaque jour de la période sélectionnée
+   - Pour chaque projet non encore planifié
+   - Pour chaque créneau horaire disponible
+   - Pour chaque salle disponible
+   - Vérification de la disponibilité du superviseur
+   - Recherche de deux professeurs disponibles pour le jury
+   - Création de la soutenance si toutes les conditions sont remplies
+3. **Notifications**: Envoi de notifications à toutes les personnes concernées
+4. **Rapport**: Génération d'un rapport sur les soutenances planifiées et non planifiées
 
-### Key Constraints
-- Professors cannot be in two defenses simultaneously
-- A professor cannot be both supervisor and jury member for the same defense
-- Rooms can only host one defense at a time
-- Time slots include breaks between defenses
-- Professors' availability is respected for each day of the week
+### Mode multi-jours
+L'algorithme peut fonctionner sur une période de plusieurs jours, ce qui permet de répartir les soutenances de manière optimale sur une semaine ou plus. Dans ce mode, il:
+- Exclut automatiquement les week-ends
+- Répartit équitablement les soutenances sur les jours disponibles
+- S'arrête dès que tous les projets sont planifiés
 
-## Database Structure
+## 📊 Structure de la Base de Données
 
-UniDefense uses MongoDB with the following main collections:
+Le système utilise MongoDB avec les modèles suivants:
 
-- **Users**: Authentication and user information
-- **Professors**: Professor profiles and availability
-- **Students**: Student information and project associations
-- **Projects**: Project details and supervisor information
-- **Rooms**: Room information and availability
-- **Defenses**: Scheduled defense sessions
-- **Notifications**: System notifications for users
+- **User**: Utilisateurs du système (admin, professeur, étudiant)
+- **Professor**: Informations sur les professeurs et leurs disponibilités
+- **Student**: Informations sur les étudiants
+- **Project**: Projets de fin d'études avec liens vers l'étudiant et le superviseur
+- **Room**: Salles disponibles pour les soutenances
+- **Defense**: Soutenances planifiées avec tous les détails
+- **Notification**: Système de notifications pour les utilisateurs
 
-## Security Features
+## 🔒 Sécurité
 
-- **Authentication**: Secure login with email/password
-- **Role-Based Access**: Different permissions for administrators, professors, and students
-- **Data Validation**: Input validation on both client and server
-- **Password Security**: Secure password hashing and storage
-- **Session Management**: Secure session handling with NextAuth.js
+- Authentification sécurisée avec NextAuth.js
+- Hachage des mots de passe avec bcrypt
+- Contrôle d'accès basé sur les rôles
+- Protection contre les injections NoSQL
+- Validation des données côté serveur
 
-## Deployment
+## 📱 Responsive Design
 
-UniDefense can be deployed to various platforms:
+L'application est entièrement responsive et s'adapte à tous les appareils:
+- Ordinateurs de bureau
+- Tablettes
+- Smartphones
 
-### Vercel (Recommended)
-1. Connect your GitHub repository to Vercel
-2. Configure environment variables in the Vercel dashboard
-3. Deploy with a single click
+## 🌐 Déploiement
 
-### Other Platforms
-- **Docker**: Containerized deployment available
-- **Traditional Hosting**: Can be deployed on any Node.js hosting service
+L'application peut être déployée sur:
+- **Vercel**: Déploiement recommandé pour sa simplicité et son intégration avec Next.js
+- **Netlify**: Autre option populaire pour les applications React
 
-## Maintenance
 
-### Regular Tasks
-- Database backups
-- Security updates
-- Performance monitoring
 
-### Troubleshooting
-- Check logs for errors
-- Verify database connection
-- Ensure email service is functioning
+## 🔄 Maintenance et Mises à Jour
 
-## Contributing
+- Sauvegardez régulièrement la base de données
+- Mettez à jour les dépendances pour des raisons de sécurité
+- Vérifiez les logs pour détecter d'éventuels problèmes
+- Planifiez des sauvegardes automatiques
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+## 📞 Support
 
-## License
+Pour toute question ou assistance:
+- Créez une issue sur GitHub
+- Contactez l'équipe de développement à support@unidefense.com
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 📄 Licence
+
+Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus de détails.
+
+## 🙏 Remerciements
+
+- Tous les contributeurs au projet
+- L'université pour son soutien
+- La communauté open-source pour les outils et bibliothèques utilisés
 \`\`\`
 
-Let's also update the CSS to ensure we have the animations we need:
+## 11. Let's create a page transition component to enhance the UI:
