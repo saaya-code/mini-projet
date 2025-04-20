@@ -141,7 +141,7 @@ L'application peut être déployée sur:
 
 Pour toute question ou assistance:
 - Créez une issue sur GitHub
-- Contactez l'équipe de développement à support@unidefense.com
+- Contactez l'équipe de développement à boualimohamed74@gmail.com
 
 ## 📄 Licence
 
