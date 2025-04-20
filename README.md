@@ -42,26 +42,26 @@ UniDefense est une application web complète pour la gestion et la planification
 ## 🛠️ Installation
 
 1. Clonez le dépôt
-   \`\`\`bash
+   ```bash
    git clone https://github.com/votre-utilisateur/unidefense.git
    cd unidefense
-   \`\`\`
+   ```
 
 2. Installez les dépendances
-   \`\`\`bash
+   ```bash
    npm install
-   \`\`\`
+   ```
 
 3. Configurez les variables d'environnement
-   \`\`\`bash
+   ```bash
    cp .env.local.example .env.local
    # Modifiez les valeurs dans .env.local selon votre configuration
-   \`\`\`
+   ```
 
 4. Lancez l'application en mode développement
-   \`\`\`bash
+   ```bash
    npm run dev
-   \`\`\`
+   ```
 
 5. Accédez à l'application à l'adresse [http://localhost:3000](http://localhost:3000)
 
@@ -152,6 +152,4 @@ Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus de détails.
 - Tous les contributeurs au projet
 - L'université pour son soutien
 - La communauté open-source pour les outils et bibliothèques utilisés
-\`\`\`
 
-## 11. Let's create a page transition component to enhance the UI:
